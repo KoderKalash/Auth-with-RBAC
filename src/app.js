@@ -1,17 +1,38 @@
-// App definition file
-
 import express from "express";
+import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js"
+import errorHandler from "./middleware/errorHandler.js";
+import healthRoutes from "./routes/health.routes.js"
+
+const app = express();
 
 
-// create express app
-const app = express()
-
-// Middleware to parse JSON bodies
 app.use(express.json())
 
-//health check route --> basic
-app.get('/',(res)=>{
-    res.send("Hello Duniya!")
-})
+
+app.use(userRoutes)
+app.use(authRoutes)
+app.use(healthRoutes)
+
+app.use((req,res,next)=>{ //inline middleware
+        console.log(`${req.method} ${req.originalUrl}`)
+        next()
+    })
+
+
+/*
+  TODO 3:
+  Add one middleware that logs:
+  - request method
+  - request URL
+*/
+
+
+app.use(errorHandler)
+
+/*
+  NOTE:
+  Do NOT add error handling yet.
+*/
 
 export default app;

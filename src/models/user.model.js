@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // select: false
+    select: false //to exclude password field by default and include it only when needed(for comparison)
   }
 }, { timestamps: true })
 

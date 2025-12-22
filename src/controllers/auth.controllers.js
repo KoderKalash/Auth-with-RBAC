@@ -35,7 +35,7 @@ export const login = asyncHandler(async (req, res) => {
 
     if (!email || !password) throw new AppError("Credentials are required", 400)
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }).select("+password") //to include password field only for comparison
     if (!user) throw new AppError("User not found", 401)
 
     const isMatch = await bcrypt.compare(password, user.password)

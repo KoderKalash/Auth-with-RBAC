@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false //to exclude password field by default and include it only when needed(for comparison)
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin","manager"],
+    default: "user"
   }
 }, { timestamps: true })
 
@@ -36,7 +41,7 @@ const saltRounds = 10;
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return; //avoids double hashing
 
-  this.password = await bcrypt.hash(this.password,saltRounds)
+  this.password = await bcrypt.hash(this.password, saltRounds)
 
 });
 
